@@ -3,11 +3,10 @@
     "_id": {
       "$oid": "654c98337709b76c24fc6a63"
     },
-    "username": "faza",
+    "firstName": "Muh.",
+    "lastName": "Faza",
     "email": "faza@gmail.com",
     "password": "pass123",
-    "phoneNumber": "2345678912",
-    "address": "Jl. Rumah",
     "createdAt": "2023-11-05T10:26:13.900Z",
     "updatedAt": "2023-11-05T10:26:13.900Z"
   },
@@ -15,11 +14,10 @@
     "_id": {
       "$oid": "654c98337709b76c24fc6a64"
     },
-    "username": "gery",
+    "firstName": "Gery",
+    "lastName": "Juniarto",
     "email": "gery@gmail.com",
     "password": "pass123",
-    "phoneNumber": "2345678912",
-    "address": "Jl. Juniarto",
     "createdAt": "2023-11-05T10:26:14.041Z",
     "updatedAt": "2023-11-05T10:26:14.041Z"
   },
@@ -27,11 +25,10 @@
     "_id": {
       "$oid": "654c98337709b76c24fc6a65"
     },
-    "username": "bagas",
+    "firstName": "Raihan",
+    "lastName": "Bagas",
     "email": "bagas@gmail.com",
     "password": "pass123",
-    "phoneNumber": "198274819",
-    "address": "Jl. Kebon Anyar",
     "createdAt": "2023-11-05T10:47:21.748Z",
     "updatedAt": "2023-11-05T10:47:21.748Z"
   },
@@ -39,11 +36,10 @@
     "_id": {
       "$oid": "654c98337709b76c24fc6a66"
     },
-    "username": "dapo",
+    "firstName": "Muh.",
+    "lastName": "Daffa",
     "email": "dapo@gmail.com",
     "password": "pass123",
-    "phoneNumber": "76527813",
-    "address": "Jl. Pandaan",
     "createdAt": "2023-11-06T04:24:44.222Z",
     "updatedAt": "2023-11-06T04:24:44.222Z"
   }
