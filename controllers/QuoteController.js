@@ -1,4 +1,4 @@
-const Quote = require("../model/Quote");
+const { Quote } = require("../model");
 
 class QuoteController {
     static async generateQuote(req, res, next) {

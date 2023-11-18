@@ -22,7 +22,7 @@ class User {
         try {
             return await getDB()
                 .collection("Users")
-                .findOne({ _id: ObjectId(id) });
+                .findOne({ _id: new ObjectId(id) });
         } catch (err) {
             throw err;
         }
@@ -33,6 +33,16 @@ class User {
             return await getDB().collection("Users").findOne({ email });
         } catch (err) {
             throw err;
+        }
+    }
+
+    static async findById(id) {
+        try {
+            return await getDB()
+                .collection("Users")
+                .findOne({ _id: new ObjectId(id) });
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -64,7 +74,7 @@ class User {
         try {
             return await getDB()
                 .collection("Users")
-                .updateOne({ _id: ObjectId(id) }, { $set: user });
+                .updateOne({ _id: new ObjectId(id) }, { $set: user });
         } catch (err) {
             throw err;
         }
@@ -74,7 +84,7 @@ class User {
         try {
             return await getDB()
                 .collection("Users")
-                .deleteOne({ _id: ObjectId(id) });
+                .deleteOne({ _id: new ObjectId(id) });
         } catch (err) {
             throw err;
         }
