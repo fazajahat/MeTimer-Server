@@ -16,7 +16,6 @@ class Quote {
             });
 
             const quoteResponse = response.choices[0].text.replace(/\n\n/, "");
-            console.log(quoteResponse);
 
             // mencari quote apakah ada di database jika ada return hasil di database
             const findQuote = await getDB().collection("Quotes").findOne({ quote: quoteResponse });
