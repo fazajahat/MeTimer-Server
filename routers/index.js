@@ -8,7 +8,7 @@ router.post("/register", UserController.register);
 
 router.post("/login", UserController.login);
 
-router.use(authentication);
+// router.use(authentication);
 
 router.get("/quotes", QuoteController.generateQuote);
 
