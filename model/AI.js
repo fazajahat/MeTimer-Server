@@ -6,7 +6,9 @@ const openai = require("../config/openai.config");
 class AI {
     static async generateQuote(mood = "mindfulness") {
         try {
-            const prompt = `write me a quotes about ${mood}.`;
+            mood = mood === "mindfulness" ?? mood.join(", ");
+
+            const prompt = `write me a a motivational quotes when in ${mood} moods.`;
 
             const response = await openai.completions.create({
                 model: "text-davinci-003",
