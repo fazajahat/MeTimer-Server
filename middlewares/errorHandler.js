@@ -12,9 +12,9 @@ function errorHandler(err, req, res, next) {
     } else if (err.name == "INVALID_CREDENTIAL") {
         status = 401;
         message = err.message;
-    } else if (err.name == "UNAUTHENTICATED") {
+    } else if (err.name == "UNAUTHENTICATED" || err.name == "JsonWebTokenError") {
         status = 401;
-        message = err.message;
+        message = "You're unauthenticated!";
     }
 
     res.status(status).json({ message });
