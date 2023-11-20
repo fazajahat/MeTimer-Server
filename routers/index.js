@@ -12,7 +12,7 @@ router.post("/login", UserController.login);
 router.use(authentication);
 
 router.get("/quotes", AIController.generateQuote);
-router.get("/journalResponse", AIController.journalResponse);
+router.post("/journalResponse", AIController.journalResponse);
 
 router.post("/records", RecordController.createRecord);
 router.get("/records", RecordController.getRecords);
