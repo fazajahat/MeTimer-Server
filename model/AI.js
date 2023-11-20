@@ -55,7 +55,7 @@ class AI {
                 max_tokens: 2048,
                 temperature: 1
             });
-            const journalResponse = response.choices[0].text;
+            const journalResponse = response.choices[0].text.replace(/\n\n/, "");
             return journalResponse;
         } catch (error) {
             throw error;
