@@ -57,7 +57,6 @@ class User {
             // INTINYA: Kalo user udh ada, return bakalan null. maka dari itu di find lagi biar bisa return id nya
             // Kalo belum ada, return nya bakal object user nya yg ketemu, maka aku return 0
             // Biar kyk sequelize
-            console.log("Result:", result);
             if (result === null) {
                 const newUser = await getDB().collection("Users").findOne({ email });
                 return newUser._id;
@@ -87,6 +86,14 @@ class User {
                 .deleteOne({ _id: new ObjectId(id) });
         } catch (err) {
             throw err;
+        }
+    }
+
+    static async deleteMany(){
+        try {
+            return await getDB().collection("Users").deleteMany({})
+        } catch (err) {
+            throw err
         }
     }
 }

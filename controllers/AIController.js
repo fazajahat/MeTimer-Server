@@ -13,7 +13,6 @@ class AIController {
 
     static async journalResponse(req, res, next) {
         const { journal_content } = req.body;
-        console.log(journal_content);
         try {
             const journalResponse = await AI.journalResponse(journal_content);
             res.status(200).json({ response: journalResponse });
