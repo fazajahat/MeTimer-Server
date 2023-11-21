@@ -33,6 +33,11 @@ class Record {
                             foreignField: "_id",
                             as: "Journal"
                         }
+                    },
+                    {
+                        $sort: {
+                            date: -1
+                        }
                     }
                 ]);
             return await records.toArray();
