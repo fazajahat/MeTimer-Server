@@ -36,6 +36,7 @@ class AIController {
         const { id } = req.user;
         try {
             const chatLogs = await AI.getChatAI(id);
+            res.send(chatLogs);
         } catch (error) {
             next(error);
         }
