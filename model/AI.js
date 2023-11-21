@@ -80,7 +80,7 @@ class AI {
                 .insertOne({ question: chat, answer: chatResponse, userId: new ObjectId(id), date: new Date() });
             const chatLogs = await getDB()
                 .collection("ChatLogs")
-                .collection.find({ userId: new ObjectId(id) })
+                .find({ userId: new ObjectId(id) })
                 .sort({ date: 1 })
                 .toArray();
             return chatLogs;
