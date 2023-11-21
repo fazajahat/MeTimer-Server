@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { getDB } = require("../config/mongodb.config");
 const openai = require("../config/openai.config");
+const { ObjectId } = require("mongodb");
 
 class AI {
     static async generateQuote(mood = "mindfulness") {
@@ -59,6 +60,43 @@ class AI {
             });
             const journalResponse = response.choices[0].text.replace(/\n\n/, "");
             return journalResponse;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async responseChatAI(chat, id) {
+        try {
+            const prompt = `I want you to act a psychologist. i will provide you my thoughts. i want you to give me scientific suggestions that will make me feel better. "${chat}"`;
+            const response = await openai.completions.create({
+                model: "text-davinci-003",
+                prompt: prompt,
+                max_tokens: 2048,
+                temperature: 1
+            });
+            const chatResponse = response.choices[0].text.replace(/\n\n/, "");
+            await getDB()
+                .collection("ChatLogs")
+                .insertOne({ question: chat, answer: chatResponse, userId: new ObjectId(id), date: new Date() });
+            const chatLogs = await getDB()
+                .collection("ChatLogs")
+                .collection.find({ userId: new ObjectId(id) })
+                .sort({ date: 1 })
+                .toArray();
+            return chatLogs;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getChatAI(id) {
+        try {
+            const chatLogs = await getDB()
+                .collection("ChatLogs")
+                .collection.find({ userId: new ObjectId(id) })
+                .sort({ date: 1 })
+                .toArray();
+            return chatLogs;
         } catch (error) {
             throw error;
         }

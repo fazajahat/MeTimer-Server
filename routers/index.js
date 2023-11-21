@@ -19,4 +19,7 @@ router.get("/records", RecordController.getRecords);
 
 router.get("/journals/:id", JournalController.findById);
 
+router.post("/chatLogs", AIController.postChatAI);
+router.get("/chatLogs", AIController.getChatLogs);
+
 module.exports = router;

@@ -20,6 +20,26 @@ class AIController {
             console.log(error);
         }
     }
+
+    static async postChatAI(req, res, next) {
+        const { id } = req.user;
+        const { chat } = req.body;
+        try {
+            const chatLogs = await AI.responseChatAI(chat, id);
+            res.status(201).json(chatLogs);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async getChatLogs(req, res, next) {
+        const { id } = req.user;
+        try {
+            const chatLogs = await AI.getChatAI(id);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = AIController;
