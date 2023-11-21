@@ -1,11 +1,15 @@
 const {User} = require("../model");
+const Helper = require("../helper/helper");
 const request = require('supertest');
 const app = require("../app")
 const { getDB } = require("../config/mongodb.config");
 
+const UserController = require('../controllers/UserController');
+
 
 jest.mock("../config/mongodb.config");
-
+jest.mock("../helper/helper");
+jest.mock("../model/index");
 
 
 const userTest = {
@@ -274,3 +278,83 @@ describe('User', () => {
     });
   }); 
 });
+
+describe('UserController', () => {
+    let mockReq, mockRes, mockNext;
+  
+    beforeEach(() => {
+      mockReq = {
+        body: {},
+      };
+      mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+      mockNext = jest.fn();
+    });
+  
+    describe('register', () => {
+      it('should register a new user', async () => {
+        mockReq.body = {
+          firstName: 'Test',
+          lastName: 'User',
+          email: 'test@example.com',
+          password: 'password123'
+        };
+        Helper.hashPassword.mockReturnValue('hashedPassword');
+        User.findOrCreate.mockResolvedValue('userId');
+  
+        await UserController.register(mockReq, mockRes, mockNext);
+  
+        expect(User.findOrCreate).toHaveBeenCalledWith(mockReq.body.email, expect.objectContaining({
+          password: 'hashedPassword'
+        }));
+        expect(mockRes.status).toHaveBeenCalledWith(201);
+        expect(mockRes.json).toHaveBeenCalledWith({ message: "New user successfully created", id: 'userId' });
+      });
+  
+      it('should call next with an error if something goes wrong', async () => {
+        mockReq.body = {
+          firstName: 'Test',
+          lastName: 'User',
+          email: 'test@example.com',
+          password: 'password123'
+        };
+        User.findOrCreate.mockRejectedValue(new Error('Test error'));
+  
+        await UserController.register(mockReq, mockRes, mockNext);
+  
+        expect(mockNext).toHaveBeenCalledWith(new Error('Test error'));
+      });
+    });
+    describe('login', () => {
+        it('should login a user', async () => {
+          mockReq.body = {
+            email: 'test@example.com',
+            password: 'password123'
+          };
+          User.findByEmail.mockResolvedValue({ _id: 'userId', email: 'test@example.com', password: 'hashedPassword' });
+          Helper.comparePassword.mockReturnValue(true);
+          Helper.generateToken.mockReturnValue('testToken');
+    
+          await UserController.login(mockReq, mockRes, mockNext);
+    
+          expect(User.findByEmail).toHaveBeenCalledWith(mockReq.body.email);
+          expect(Helper.comparePassword).toHaveBeenCalledWith(mockReq.body.password, 'hashedPassword');
+          expect(mockRes.status).toHaveBeenCalledWith(200);
+          expect(mockRes.json).toHaveBeenCalledWith({ access_token: 'testToken' });
+        });
+    
+        it('should call next with an error if something goes wrong', async () => {
+          mockReq.body = {
+            email: 'test@example.com',
+            password: 'password123'
+          };
+          User.findByEmail.mockRejectedValue(new Error('Test error'));
+    
+          await UserController.login(mockReq, mockRes, mockNext);
+    
+          expect(mockNext).toHaveBeenCalledWith(new Error('Test error'));
+        });
+      });
+  });
