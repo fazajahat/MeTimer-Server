@@ -248,4 +248,29 @@ describe('User', () => {
       expect(result).toBe(0);
     });
   });
+  describe('create', () => {
+    it('should create a user', async () => {
+      const mockInsertOne = jest.fn().mockResolvedValue({ insertedId: 'testId' });
+      getDB.mockReturnValue({
+        collection: () => ({ insertOne: mockInsertOne })
+      });
+
+      const user = { name: 'Test User', email: 'test@example.com' };
+      const result = await User.create(user);
+
+      expect(mockInsertOne).toHaveBeenCalledWith(user);
+      expect(result).toEqual({ insertedId: 'testId' });
+    });
+
+    it('should throw an error if something goes wrong', async () => {
+      const mockInsertOne = jest.fn().mockRejectedValue(new Error('Test error'));
+      getDB.mockReturnValue({
+        collection: () => ({ insertOne: mockInsertOne })
+      });
+
+      const user = { name: 'Test User', email: 'test@example.com' };
+
+      await expect(User.create(user)).rejects.toThrow('Test error');
+    });
+  }); 
 });
