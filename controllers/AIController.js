@@ -7,7 +7,7 @@ class AIController {
             const quote = await AI.generateQuote(mood);
             res.status(200).json(quote);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 
@@ -17,7 +17,7 @@ class AIController {
             const journalResponse = await AI.journalResponse(journal_content);
             res.status(200).json({ response: journalResponse });
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 
@@ -28,7 +28,7 @@ class AIController {
             const chatLogs = await AI.responseChatAI(chat, id);
             res.status(201).json(chatLogs);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 
@@ -37,7 +37,7 @@ class AIController {
         try {
             const chatLogs = await AI.getChatAI(id);
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 }

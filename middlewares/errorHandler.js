@@ -15,6 +15,9 @@ function errorHandler(err, req, res, next) {
     } else if (err.name == "UNAUTHENTICATED" || err.name == "JsonWebTokenError") {
         status = 401;
         message = "You're unauthenticated!";
+    } else if (err.name === "RateLimitError") {
+        status = 400;
+        message = err.error.message;
     }
 
     res.status(status).json({ message });
