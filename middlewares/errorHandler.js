@@ -17,7 +17,7 @@ function errorHandler(err, req, res, next) {
         message = "You're unauthenticated!";
     } else if (err.name === "RateLimitError") {
         status = 400;
-        message = err.error.message;
+        message = err.message;
     }
 
     res.status(status).json({ message });
