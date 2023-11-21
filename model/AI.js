@@ -93,7 +93,7 @@ class AI {
         try {
             const chatLogs = await getDB()
                 .collection("ChatLogs")
-                .collection.find({ userId: new ObjectId(id) })
+                .find({ userId: new ObjectId(id) })
                 .sort({ date: 1 })
                 .toArray();
             return chatLogs;
