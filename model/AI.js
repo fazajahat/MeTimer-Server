@@ -67,7 +67,7 @@ class AI {
 
     static async responseChatAI(chat, id) {
         try {
-            const prompt = `I want you to act a psychologist. i will provide you my thoughts. i want you to give me scientific suggestions that will make me feel better. "${chat}"`;
+            const prompt = `I want you to act a psychologist. i will provide you my thoughts. i want you to give me scientific suggestions that will make me feel better.  i want you to give response maximum 4 sentences. my thought "${chat}"`;
             const response = await openai.completions.create({
                 model: "text-davinci-003",
                 prompt: prompt,
