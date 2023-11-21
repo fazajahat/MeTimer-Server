@@ -44,7 +44,7 @@ class AI {
 
             return insertData;
         } catch (error) {
-            throw { name: "RateLimitError", message: "Limit Error" };
+            throw { name: "RateLimitError", message: "Limit Error", error };
         }
     }
 
@@ -61,7 +61,7 @@ class AI {
             const journalResponse = response.choices[0].text.replace(/\n\n/, "");
             return journalResponse;
         } catch (error) {
-            throw { name: "RateLimitError", message: "Limit Error" };
+            throw { name: "RateLimitError", message: "Limit Error", error };
         }
     }
 
@@ -85,7 +85,7 @@ class AI {
                 .toArray();
             return chatLogs;
         } catch (error) {
-            throw { name: "RateLimitError", message: "Limit Error" };
+            throw { name: "RateLimitError", message: "Limit Error", error };
         }
     }
 
@@ -98,7 +98,7 @@ class AI {
                 .toArray();
             return chatLogs;
         } catch (error) {
-            throw { name: "RateLimitError", message: "Limit Error" };
+            throw { name: "RateLimitError", message: "Limit Error", error };
         }
     }
 }
