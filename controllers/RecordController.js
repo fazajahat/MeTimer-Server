@@ -25,6 +25,7 @@ class RecordController {
         const { recordId } = req.params;
         try {
             const record = await Record.findById(recordId);
+            res.send(record);
         } catch (error) {
             console.log(error);
         }
