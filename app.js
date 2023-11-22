@@ -20,11 +20,11 @@ app.use("/", router);
 // Error Handler
 app.use(errorHandler);
 
-connectDB()
-// connectDB().then((db) => {
-//     app.listen(PORT, () => {
-//         console.log("Server started on port " + PORT);
-//     });
-// });
+// connectDB()
+connectDB().then((db) => {
+    app.listen(PORT, () => {
+        console.log("Server started on port " + PORT);
+    });
+});
 
 module.exports = app;
