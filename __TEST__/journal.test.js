@@ -1,94 +1,78 @@
+require("dotenv").config();
 const { getDB } = require("../config/mongodb.config");
 const { ObjectId } = require("mongodb");
 const {Journal} = require('../model');
 const JournalController = require('../controllers/JournalController');
 
-jest.mock("../config/mongodb.config");
-jest.mock("../model/Journal");
+let RecordId, token, JournalId;
 
-describe('Journal', () => {
-    describe('create', () => {
-        it('should create a journal entry', async () => {
-          const mockDB = {
-            collection: jest.fn().mockReturnThis(),
-            insertOne: jest.fn().mockResolvedValue({ insertedId: 'journalId' }),
-          };
-          getDB.mockReturnValue(mockDB);
-    
-          const journalId = await Journal.create('Test Title', 'Test Content');
-    
-          expect(mockDB.collection).toHaveBeenCalledWith('Journals');
-          expect(mockDB.insertOne).toHaveBeenCalledWith({ title: 'Test Title', content: 'Test Content' });
-          expect(journalId).toBe('journalId');
-        });
-    
-        it('should throw an error if something goes wrong', async () => {
-          const mockDB = {
-            collection: jest.fn().mockReturnThis(),
-            insertOne: jest.fn().mockRejectedValue(new Error('Test error')),
-          };
-          getDB.mockReturnValue(mockDB);
-    
-          await expect(Journal.create('Test Title', 'Test Content')).rejects.toThrow('Test error');
-        });
-      });
+beforeAll(async () => {
+  // Register a user
+  const registerResponse = await request(app)
+    .post('/register')
+    .send({ email: 'test@example.com', password: 'password123' });
 
-  describe('findById', () => {
-    it('should find a journal by id', async () => {
-      const mockFindOne = jest.fn().mockResolvedValue({ _id: 'testId', title: 'Test Title', content: 'Test Content' });
-      getDB.mockReturnValue({
-        collection: () => ({ findOne: mockFindOne })
-      });
+  // Login the user
+  const loginResponse = await request(app)
+    .post('/login')
+    .send({ email: 'test@example.com', password: 'password123' });
 
-      const result = await Journal.findById('testId');
+  token = loginResponse.body.access_token;
 
-      expect(mockFindOne).toHaveBeenCalledWith({ _id: new ObjectId('testId') });
-      expect(result).toEqual({ _id: 'testId', title: 'Test Title', content: 'Test Content' });
+  // Create a record
+  const recordResponse = await request(app)
+    .post('/records')
+    .set('access_token', loginResponse.body.access_token)
+    .send({
+      rateMood: 4,
+      moods: ["Happy"],
+      title: "Meet a lady of my life",
+      content: "Today im very happy because i met her"
     });
 
-    it('should throw an error if something goes wrong', async () => {
-      const mockFindOne = jest.fn().mockRejectedValue(new Error('Test error'));
-      getDB.mockReturnValue({
-        collection: () => ({ findOne: mockFindOne })
-      });
+  RecordId = recordResponse.body.insertedId;
+  console.log(recordResponse.body, 'ini recordResponse.body');
+  console.log(RecordId, token, 'ini RecordId dan token');
 
-      await expect(Journal.findById('testId')).rejects.toThrow('Test error');
-    });
-  });
+  // Get journalId from record
+  const getRecord = await request(app)
+    .get('/records')
+    .set('access_token', loginResponse.body.access_token);
+  
+  JournalId = getRecord.body[0].journalId
+  console.log(JournalId, 'ini JournalId');
 });
 
-describe('JournalController', () => {
-    let mockReq, mockRes, mockNext;
-  
-    beforeEach(() => {
-      mockReq = {
-        params: {},
-      };
-      mockRes = {
-        json: jest.fn(),
-      };
-      mockNext = jest.fn();
-    });
-  
-    describe('findById', () => {
-      it('should find a journal by id', async () => {
-        mockReq.params.id = 'testId';
-        Journal.findById.mockResolvedValue('Test journal');
-  
-        await JournalController.findById(mockReq, mockRes, mockNext);
-  
-        expect(Journal.findById).toHaveBeenCalledWith('testId');
-        expect(mockRes.json).toHaveBeenCalledWith('Test journal');
-      });
-  
-      it('should log an error if something goes wrong', async () => {
-        mockReq.params.id = 'testId';
-        const consoleSpy = jest.spyOn(console, 'log');
-        Journal.findById.mockRejectedValue(new Error('Test error'));
-  
-        await JournalController.findById(mockReq, mockRes, mockNext);
-  
-        expect(consoleSpy).toHaveBeenCalledWith(new Error('Test error'));
-      });
-    });
-  });
+afterAll(async () => {
+  // Delete the record
+  await getDB().collection('Records').deleteMany({});
+
+  // Delete the user
+  await getDB().collection('Users').deleteMany({});
+
+  // Delete the journal
+  await getDB().collection('Journals').deleteMany({});
+});
+
+const request = require('supertest');
+const app = require('../app.js'); // adjust this path to your Express app file
+
+describe('GET /journals/:id', () => {
+  it('should return a journal with _id, title, and content', async () => {
+
+    const response = await request(app)
+      .get(`/journals/${JournalId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('access_token', token);
+
+      console.log(response.body, 'ini response.body dari test');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('_id');
+    expect(typeof response.body._id).toBe('string');
+    expect(response.body).toHaveProperty('title');
+    expect(typeof response.body.title).toBe('string');
+    expect(response.body).toHaveProperty('content');
+    expect(typeof response.body.content).toBe('string');
+  }, 20000);
+});
