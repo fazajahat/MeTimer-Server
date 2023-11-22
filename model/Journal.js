@@ -21,6 +21,15 @@ class Journal {
             throw error;
         }
     }
+    
+    static async destroyAll() {
+        try {
+            const journal = await getDB().collection("Journals").deleteMany({});
+            return journal;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = Journal;
