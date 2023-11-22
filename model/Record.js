@@ -52,7 +52,7 @@ class Record {
                 .collection("Records")
                 .findOne({ _id: new ObjectId(recordId) });
 
-            const journal = Journal.findById(record.journalId);
+            const journal = await Journal.findById(record.journalId);
             record.Journal = journal;
             return record;
         } catch (error) {
