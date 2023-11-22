@@ -22,6 +22,7 @@ class UserController {
 
             // Validate for unique username and email
             const newUser = await User.findOrCreate(email, userData);
+            // console.log(newUser, "<<new user");
             if (!newUser) {
                 throw {
                     name: "ALREADY_EXIST",

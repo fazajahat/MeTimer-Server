@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.57% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/35</span>
+                <span class='fraction'>10/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">22.22% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>2/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.57% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/35</span>
+                <span class='fraction'>10/35</span>
             </div>
         
             
@@ -195,8 +195,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,8 +213,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -223,9 +223,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -295,9 +295,9 @@ class User {
         }
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    st</span>atic async findByEmail(email) {
-<span class="cstat-no" title="statement not covered" >        try {</span>
-<span class="cstat-no" title="statement not covered" >            return await getDB().collection("Users").findOne({ email });</span>
+    static async findByEmail(email) {
+        try {
+            return await getDB().collection("Users").findOne({ email });
         } catch (err) {
 <span class="cstat-no" title="statement not covered" >            throw err;</span>
         }
@@ -313,9 +313,9 @@ class User {
         }
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    st</span>atic async findOrCreate(email, data) {
-<span class="cstat-no" title="statement not covered" >        try {</span>
-            const result = <span class="cstat-no" title="statement not covered" >await getDB().collection("Users").findOneAndUpdate(</span>
+    static async findOrCreate(email, data) {
+        try {
+            const result = await getDB().collection("Users").findOneAndUpdate(
                 { email }, // find a document with that email OR username
                 { $setOnInsert: data }, // use $setOnInsert operator to insert data only on creation
                 { upsert: true, returnOriginal: false }
@@ -324,10 +324,10 @@ class User {
             // INTINYA: Kalo user udh ada, return bakalan null. maka dari itu di find lagi biar bisa return id nya
             // Kalo belum ada, return nya bakal object user nya yg ketemu, maka aku return 0
             // Biar kyk sequelize
-<span class="cstat-no" title="statement not covered" >            if (result === null) {</span>
-                const newUser = <span class="cstat-no" title="statement not covered" >await getDB().collection("Users").findOne({ email });</span>
-<span class="cstat-no" title="statement not covered" >                return newUser._id;</span>
-            } else {
+            if (result === null) {
+                const newUser = await getDB().collection("Users").findOne({ email });
+                return newUser._id;
+            } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >                return 0;</span>
             }
         } catch (err) {
@@ -373,7 +373,7 @@ module.exports = User;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-21T19:02:24.824Z
+                at 2023-11-22T04:13:33.228Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
