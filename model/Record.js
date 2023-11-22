@@ -8,7 +8,7 @@ class Record {
         try {
             const journalId = await Journal.create(title, content);
             const record = await getDB()
-                .collection("Records")
+                  .collection("Records")
                 .insertOne({ rateMood, moods, journalId: new ObjectId(journalId), date: new Date(), userId: new ObjectId(userId) });
             return record;
         } catch (error) {
