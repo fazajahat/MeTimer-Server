@@ -12,6 +12,7 @@ beforeAll(async () => {
     .post('/register')
     .send({ email: 'test@example.com', password: 'password123' });
 
+    console.log(registerResponse.body, 'ini registerResponse.body');
   // Login the user
   const loginResponse = await request(app)
     .post('/login')
@@ -75,4 +76,26 @@ describe('GET /journals/:id', () => {
     expect(response.body).toHaveProperty('content');
     expect(typeof response.body.content).toBe('string');
   }, 20000);
+
+  // it should return 404 and null when journal is not found
+
+  it('should return 404 and null when journal is not found', async () => {
+    const response = await request(app)
+      .get(`/journals/655d910a3b231e3453469999`)
+      .set('access_token', token);
+
+    expect(response.body).toBe(null);
+  });
+});
+
+describe('POST /journalResponse', () => {
+  it('should return an object with a response key', async () => {
+    const response = await request(app)
+      .post('/journalResponse')
+      .set('access_token', token)
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('response');
+    expect(typeof response.body.response).toBe('string');
+  });
 });
