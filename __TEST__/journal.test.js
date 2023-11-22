@@ -7,6 +7,12 @@ const JournalController = require('../controllers/JournalController');
 let RecordId, token, JournalId;
 
 beforeAll(async () => {
+  
+  await request(app).delete("/deleteAll/record");
+  await request(app).delete("/deleteAll/user");
+  await request(app).delete("/deleteAll/journal");
+
+
   // Register a user
   const registerResponse = await request(app)
     .post('/register')
@@ -42,18 +48,8 @@ beforeAll(async () => {
   
   JournalId = getRecord.body[0].journalId
   console.log(JournalId, 'ini JournalId');
-});
+}, 20000);
 
-afterAll(async () => {
-  // Delete the record
-  await getDB().collection('Records').deleteMany({});
-
-  // Delete the user
-  await getDB().collection('Users').deleteMany({});
-
-  // Delete the journal
-  await getDB().collection('Journals').deleteMany({});
-});
 
 const request = require('supertest');
 const app = require('../app.js'); // adjust this path to your Express app file
