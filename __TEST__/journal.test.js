@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { getDB } = require("../config/mongodb.config");
+const { getDB, connectDB } = require("../config/mongodb.config");
 const { ObjectId } = require("mongodb");
 const {Journal} = require('../model');
 const JournalController = require('../controllers/JournalController');
@@ -7,10 +7,11 @@ const JournalController = require('../controllers/JournalController');
 let RecordId, token, JournalId;
 
 beforeAll(async () => {
+  await connectDB()
   
-  await request(app).delete("/deleteAll/record");
-  await request(app).delete("/deleteAll/user");
-  await request(app).delete("/deleteAll/journal");
+  await getDB().collection('Journals').deleteMany({});
+  await getDB().collection('Users').deleteMany({});
+  await getDB().collection('Records').deleteMany({});
 
 
   // Register a user
@@ -48,7 +49,7 @@ beforeAll(async () => {
   
   JournalId = getRecord.body[0].journalId
   console.log(JournalId, 'ini JournalId');
-}, 20000);
+}, 10000);
 
 
 const request = require('supertest');

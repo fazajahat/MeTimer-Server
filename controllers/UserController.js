@@ -91,11 +91,6 @@ class UserController {
       console.log(err);
     }
   }
-
-  static async deleteUser(req, res, next) {
-    const user = await User.deleteMany();
-    res.send(user);
-  }
 }
 
 module.exports = UserController;

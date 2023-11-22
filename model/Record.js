@@ -59,14 +59,6 @@ class Record {
             throw error;
         }
     }
-    static async deleteAll () {
-        try {
-            const record = await getDB().collection("Records").deleteMany({});
-            return record;
-        } catch (error) {
-            throw error;
-        }
-    }
 }
 
 module.exports = Record;

@@ -1,11 +1,15 @@
 require("dotenv").config();
 const request = require("supertest");
 const app = require("../app");
+const { getDB, connectDB } = require("../config/mongodb.config");
 
 let token;
 
 beforeAll(async () => {
-  await request(app).delete("/deleteAll/user");
+  
+  await connectDB()
+  await getDB().collection('Users').deleteMany({});
+  
   await request(app).post("/register").send({
     firstName: "Test",
     lastName: "User",
