@@ -76,6 +76,16 @@ class UserController {
             next(err);
         }
     }
+
+    static async getUserDetail(req, res, next) {
+        const { id } = req.body;
+        try {
+            const user = await User.findByPk(id);
+            res.send(user);
+        } catch (error) {
+            console.log(err);
+        }
+    }
 }
 
 module.exports = UserController;

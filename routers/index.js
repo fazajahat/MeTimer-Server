@@ -12,11 +12,13 @@ router.post("/login", UserController.login);
 router.use(authentication);
 
 //Faza
+router.get("/users", UserController.getUserDetail);
 router.post("/quotes", AIController.generateQuote);
 router.post("/journalResponse", AIController.journalResponse);
 
 router.post("/records", RecordController.createRecord);
 router.get("/records", RecordController.getRecords);
+router.get("/records/:recordId", RecordController.getRecordById);
 
 // Faza
 router.get("/journals/:id", JournalController.findById);
