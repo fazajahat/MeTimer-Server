@@ -5,7 +5,7 @@ class AIController {
         const { mood } = req.body;
         try {
             const quote = await AI.generateQuote(mood);
-            res.status(200).json(quote);
+            res.status(201).json(quote);
         } catch (error) {
             next(error);
         }

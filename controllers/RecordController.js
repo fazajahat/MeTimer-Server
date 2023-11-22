@@ -30,11 +30,6 @@ class RecordController {
       console.log(error);
     }
   }
-
-  static async deleteRecord(req, res, next) {
-    const response = await Record.deleteAll();
-    res.status(200).json(response);
-  }
 }
 
 module.exports = RecordController;

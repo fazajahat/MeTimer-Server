@@ -88,14 +88,6 @@ class User {
             throw err;
         }
     }
-
-    static async deleteMany(){
-        try {
-            return await getDB().collection("Users").deleteMany({})
-        } catch (err) {
-            throw err
-        }
-    }
 }
 
 module.exports = User;

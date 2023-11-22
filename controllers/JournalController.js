@@ -10,11 +10,6 @@ class JournalController {
       console.log(error);
     }
   }
-
-  static async deleteJournal(req, res, next) {
-    const journal = await Journal.destroyAll();
-    res.json(journal);
-  }
 }
 
 module.exports = JournalController;
