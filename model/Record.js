@@ -45,6 +45,20 @@ class Record {
             throw error;
         }
     }
+
+    static async findById(recordId) {
+        try {
+            const record = await getDB()
+                .collection("Records")
+                .findOne({ _id: new ObjectId(recordId) });
+
+            const journal = Journal.findById(record.journalId);
+            record.Journal = journal;
+            return record;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = Record;

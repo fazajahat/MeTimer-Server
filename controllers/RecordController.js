@@ -21,6 +21,14 @@ class RecordController {
             console.log(error);
         }
     }
+    static async getRecordById(req, res, next) {
+        const { recordId } = req.params;
+        try {
+            const record = await Record.findById(recordId);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = RecordController;
