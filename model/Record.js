@@ -5,15 +5,11 @@ const Journal = require("./Journal");
 class Record {
     static async create(data, userId) {
         const { rateMood, moods, title, content } = data;
-        try {
             const journalId = await Journal.create(title, content);
             const record = await getDB()
                   .collection("Records")
                 .insertOne({ rateMood, moods, journalId: new ObjectId(journalId), date: new Date(), userId: new ObjectId(userId) });
             return record;
-        } catch (error) {
-            throw error;
-        }
     }
 
     static async findAll(id) {
