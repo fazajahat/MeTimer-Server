@@ -31,7 +31,6 @@ class UserController {
           message: "Username or email already exist",
         };
       }
-      console.log(newUser);
       res
         .status(201)
         .json({ message: "New user successfully created", id: newUser });
@@ -77,19 +76,14 @@ class UserController {
       const access_token = Helper.generateToken(payload);
       res.status(200).json({ access_token });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
 
   static async getUserDetail(req, res, next) {
     const { id } = req.user;
-    try {
       const user = await User.findByPk(id);
       res.send(user);
-    } catch (error) {
-      console.log(err);
-    }
   }
 }
 

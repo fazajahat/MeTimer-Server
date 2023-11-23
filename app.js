@@ -6,7 +6,7 @@ const { connectDB } = require("./config/mongodb.config");
 const errorHandler = require("./middlewares/errorHandler");
 const app = express();
 const router = require("./routers");
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

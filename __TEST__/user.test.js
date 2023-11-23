@@ -6,10 +6,9 @@ const { getDB, connectDB } = require("../config/mongodb.config");
 let token;
 
 beforeAll(async () => {
-  
-  await connectDB()
-  await getDB().collection('Users').deleteMany({});
-  
+  await connectDB();
+  await getDB().collection("Users").deleteMany({});
+
   await request(app).post("/register").send({
     firstName: "Test",
     lastName: "User",
@@ -41,11 +40,28 @@ describe("POST /register", () => {
   it("should return an error with missing input", async () => {
     const response = await request(app).post("/register").send({});
 
-    console.log(response.body, "<<<<<<< res body");
     expect(response.status).toBe(404);
     expect(response.body).toHaveProperty(
       "message",
       "Missing one or more input in post register"
+    );
+  });
+});
+
+// POST REGISTER ERROR ALREADY EXISTS
+describe("POST /register", () => {
+  it("should return an error with existing email", async () => {
+    const response = await request(app).post("/register").send({
+      firstName: "Test",
+      lastName: "User",
+      email: "test@example.com",
+      password: "password123",
+    });
+
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty(
+      "message",
+      "Username or email already exist"
     );
   });
 });
@@ -62,11 +78,10 @@ describe("POST /login", () => {
 });
 
 describe("GET /users", () => {
-it("should return user details", async () => {
+  it("should return user details", async () => {
     const response = await request(app)
-        .get("/users")
-        .set("access_token", token);
-    console.log(response.body, "ini response.body dari test /users");
+      .get("/users")
+      .set("access_token", token);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id");
@@ -81,5 +96,57 @@ it("should return user details", async () => {
     expect(typeof response.body.lastName).toBe("string");
     expect(new Date(response.body.createdAt)).toBeInstanceOf(Date);
     expect(new Date(response.body.updatedAt)).toBeInstanceOf(Date);
+  });
 });
+
+// LOGIN ERROR INVALID PASSWORD
+describe("POST /login", () => {
+  it("should return an error with invalid password", async () => {
+    const response = await request(app).post("/login").send({
+      email: "login@example.com",
+      password: "wrongpass",
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty(
+      "message",
+      "Email or password is incorrect"
+    );
+  });
+
+  it("should return an error with invalid email", async () => {
+    const response = await request(app).post("/login").send({
+      email: "error@examp.com",
+      password: "password123",
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty(
+      "message",
+      "Email or password is incorrect"
+    );
+  });
+});
+
+
+// INVALID INPUT LOGIN
+describe("POST /login", () => {
+  it("should return an error with invalid input", async () => {
+    const response = await request(app).post("/login").send({});
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty(
+      "message",
+      "Missing email in post login"
+    );
+  });
+  it("should return an error with invalid input", async () => {
+    const response = await request(app).post("/login").send({email: 'email@mail.com'});
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty(
+      "message",
+      "Missing password in post login"
+    );
+  });
 });

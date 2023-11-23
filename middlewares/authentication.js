@@ -3,7 +3,6 @@ const Helper = require("../helper/helper");
 const { User } = require("../model");
 
 async function authentication(req, res, next) {
-    try {
         const { access_token } = req.headers;
 
         const payload = Helper.verifyToken(access_token);
@@ -13,9 +12,6 @@ async function authentication(req, res, next) {
         req.user = payload;
 
         next();
-    } catch (error) {
-        next(error);
-    }
 }
 
 module.exports = authentication;

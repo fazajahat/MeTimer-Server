@@ -2,52 +2,23 @@ const { ObjectId } = require("mongodb");
 const getDB = require("../config/mongodb.config").getDB;
 
 class User {
-    static async create(user) {
-        try {
-            return await getDB().collection("Users").insertOne(user);
-        } catch (err) {
-            throw err;
-        }
-    }
-
-    static async findAll() {
-        try {
-            return await getDB().collection("Users").find().toArray();
-        } catch (err) {
-            throw err;
-        }
-    }
-
     static async findByPk(id) {
-        try {
-            return await getDB()
-                .collection("Users")
-                .findOne({ _id: new ObjectId(id) });
-        } catch (err) {
-            throw err;
-        }
+        return await getDB()
+            .collection("Users")
+            .findOne({ _id: new ObjectId(id) });
     }
 
     static async findByEmail(email) {
-        try {
-            return await getDB().collection("Users").findOne({ email });
-        } catch (err) {
-            throw err;
-        }
+        return await getDB().collection("Users").findOne({ email });
     }
 
     static async findById(id) {
-        try {
-            return await getDB()
-                .collection("Users")
-                .findOne({ _id: new ObjectId(id) });
-        } catch (error) {
-            throw error;
-        }
+        return await getDB()
+            .collection("Users")
+            .findOne({ _id: new ObjectId(id) });
     }
 
     static async findOrCreate(email, data) {
-        try {
             const result = await getDB().collection("Users").findOneAndUpdate(
                 { email }, // find a document with that email OR username
                 { $setOnInsert: data }, // use $setOnInsert operator to insert data only on creation
@@ -63,30 +34,6 @@ class User {
             } else {
                 return 0;
             }
-        } catch (err) {
-            console.log("An error occurred:", err);
-            throw err;
-        }
-    }
-
-    static async update(id, user) {
-        try {
-            return await getDB()
-                .collection("Users")
-                .updateOne({ _id: new ObjectId(id) }, { $set: user });
-        } catch (err) {
-            throw err;
-        }
-    }
-
-    static async destroy(id) {
-        try {
-            return await getDB()
-                .collection("Users")
-                .deleteOne({ _id: new ObjectId(id) });
-        } catch (err) {
-            throw err;
-        }
     }
 }
 

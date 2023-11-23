@@ -12,14 +12,10 @@ class Journal {
     }
 
     static async findById(id) {
-        try {
             const journal = await getDB()
                 .collection("Journals")
                 .findOne({ _id: new ObjectId(id) });
             return journal;
-        } catch (error) {
-            throw error;
-        }
     }
 }
 

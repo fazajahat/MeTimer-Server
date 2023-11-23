@@ -7,7 +7,7 @@ let token;
 beforeAll(async () => {
   await connectDB()
   await getDB().collection('Users').deleteMany({});
-  
+
   // Register a user
   const registerResponse = await request(app)
     .post("/register")
@@ -29,7 +29,6 @@ describe("POST /quotes", () => {
       .send({
         mood: ["Depressed", "Lonely", "Hurt"],
       });
-    console.log(response.body, "ini response.body");
     expect(response.status).toBe(201);
     expect(response.body).toMatchObject({
       "quote": expect.any(String),

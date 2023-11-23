@@ -10,10 +10,8 @@ async function connectDB() {
     try {
         await client.connect();
         database = client.db("MeTimer");
-        console.log("Database connected successfully");
         return database;
     } catch (err) {
-        console.log("Error connecting to database", err);
     }
 }
 

@@ -17,7 +17,6 @@ class Record {
     }
 
     static async findAll(id) {
-        try {
             const records = await getDB()
                 .collection("Records")
                 .aggregate([
@@ -41,13 +40,9 @@ class Record {
                     }
                 ]);
             return await records.toArray();
-        } catch (error) {
-            throw error;
-        }
     }
 
     static async findById(recordId) {
-        try {
             const record = await getDB()
                 .collection("Records")
                 .findOne({ _id: new ObjectId(recordId) });
@@ -55,9 +50,6 @@ class Record {
             const journal = await Journal.findById(record.journalId);
             record.Journal = journal;
             return record;
-        } catch (error) {
-            throw error;
-        }
     }
 }
 

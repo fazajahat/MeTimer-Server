@@ -1,15 +1,14 @@
 const request = require("supertest");
 const app = require("../app.js");
 const { getDB, connectDB } = require("../config/mongodb.config");
+const { ObjectId } = require("mongodb");
 
 let token;
 
 beforeAll(async () => {
-  // await request(app).delete("/deleteAll/record");
-  // await request(app).delete("/deleteAll/user");
-  // await request(app).delete("/deleteAll/journal");
-  await connectDB()
-  await getDB().collection('Users').deleteMany({});
+  await connectDB();
+  await getDB().collection("Users").deleteMany({});
+  await getDB().collection("ChatLogs").deleteMany({});
 
   // Register a user
   const registerResponse = await request(app)
